@@ -1,6 +1,6 @@
 [submodule "backend"]
 	path = backend
-	url = https://github.com/Developer-Akademie-GmbH/conduit-backend
+	url = https://github.com/MarcoLenschau/Conduit-Backend
 [submodule "frontend"]
 	path = frontend
-	url = https://github.com/Developer-Akademie-GmbH/conduit-frontend
+	url = https://github.com/MarcoLenschau/Conduit-Frontend
