@@ -1,12 +1,14 @@
 services:
   frontend:
-    build: ./frontend
+    build:
+      dockerfile: Dockerfile.frontend
     ports: 
       - "4000:80"
     depends_on:
       - backend
   backend:
-    build: ./backend
+    build:
+      dockerfile: Dockerfile.backend
     ports:
       - "5000:5000"
     volumes:
