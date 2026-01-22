@@ -28,7 +28,13 @@ git clone https://github.com/MarcoLenschau/Conduit-Container
 cd Conduit-Container
 ```
 
-3. Start the Containers
+3. Init the submodules
+
+```bash
+git submodule init
+```
+
+4. Start the Containers
 
 ```bash
 docker-compose up -d
