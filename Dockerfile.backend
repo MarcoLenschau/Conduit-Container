@@ -1,17 +1,20 @@
 FROM python:3.5.2-alpine
 
-WORKDIR /app
+ENV _WORKDIR=/app
+ENV _WORKDIR_BACKEND=/app/backend
+
+WORKDIR ${_WORKDIR}
 
 COPY ./backend ./backend
 
 COPY entrypoint.sh .
 
-WORKDIR /app/backend
+WORKDIR ${_WORKDIR_BACKEND}
 
 RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
-RUN chmod +x /app/entrypoint.sh
+RUN chmod +x ${_WORKDIR}/entrypoint.sh
 
-ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "${_WORKDIR}/entrypoint.sh"]
