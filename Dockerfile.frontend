@@ -6,6 +6,9 @@ COPY ./frontend .
 
 WORKDIR /app/frontend
 
+RUN mkdir -p /app/frontend/src/environment && \
+    echo "export const environment = { BACKEND_IP: '${BACKEND_URL}' };" > /app/frontend/src/environment/environment.ts
+
 RUN npm install
 
 RUN npm run build
