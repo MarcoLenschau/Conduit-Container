@@ -1,3 +1,3 @@
 #!/bin/sh
-python manage.py migrate
-python manage.py runserver 0.0.0.0:5000
+python /app/backend/manage.py migrate
+python /app/backend/manage.py runserver 0.0.0.0:5000
