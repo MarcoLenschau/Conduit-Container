@@ -9,8 +9,6 @@ services:
       - "4000:80"
     depends_on:
       - backend
-    env_file:
-      - example.env
   backend:
     build:
       context: ./
@@ -21,7 +19,5 @@ services:
       - "5000:5000"
     volumes:
       - backend-data:/app
-    env_file:
-      - example.env
 volumes:
   backend-data:

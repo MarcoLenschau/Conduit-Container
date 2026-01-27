@@ -34,16 +34,25 @@ cd Conduit-Container
 git submodule init
 ```
 
-4. Start the Containers
+4. Create .env file
 
 ```bash
-docker-compose up -d
+mv example.env .env
+```
+
+> [!IMPORTANT]
+> Open `.env` and enter your own values.
+
+5. Start the Containers
+
+```bash
+docker-compose up -d --build
 ```
 
 ### How to access the App
 
-- Backend API: http://localhost:5000/api
-- Frontend: http://localhost:4000
+- Backend API: http://<ip-address>:5000/api
+- Frontend: http://<ip-address>:4000
 
 ## Usage
 
