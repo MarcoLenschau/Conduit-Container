@@ -6,6 +6,8 @@ COPY ./frontend .
 
 WORKDIR /app/frontend
 
+ARG BACKEND_URL
+
 RUN mkdir -p /app/frontend/src/environment && \
     echo "export const environment = { BACKEND_IP: '${BACKEND_URL}' };" > /app/frontend/src/environment/environment.ts
 
