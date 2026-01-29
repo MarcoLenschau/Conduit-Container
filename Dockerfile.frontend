@@ -9,16 +9,18 @@ WORKDIR /app/frontend
 ARG BACKEND_URL
 
 RUN mkdir -p /app/frontend/src/environment && \
-    echo "export const environment = { BACKEND_IP: '${BACKEND_URL}' };" > /app/frontend/src/environment/environment.ts
+    echo "export const environment = { " > /app/frontend/src/environment/environment.ts && \    
+    echo "    production: true," >> /app/frontend/src/environment/environment.ts && \
+    echo "    BACKEND_URL: '${BACKEND_URL}'" >> /app/frontend/src/environment/environment.ts && \
+    echo "};" >> /app/frontend/src/environment/environment.ts
+# RUN npm install
 
-RUN npm install
+# RUN npm run build --prod 
 
-RUN npm run build
+# FROM nginx:1.29.4-alpine
 
-FROM nginx:1.29.4-alpine
+# COPY --from=builder /app/dist/angular-conduit /usr/share/nginx/html
 
-COPY --from=builder /app/dist/angular-conduit /usr/share/nginx/html
+# EXPOSE 80
 
-EXPOSE 80
-
-ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
+# ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
