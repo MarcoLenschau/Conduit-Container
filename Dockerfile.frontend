@@ -13,6 +13,7 @@ RUN mkdir -p /app/frontend/src/environment && \
     echo "    production: true," >> /app/frontend/src/environment/environment.ts && \
     echo "    BACKEND_URL: '${BACKEND_URL}'" >> /app/frontend/src/environment/environment.ts && \
     echo "};" >> /app/frontend/src/environment/environment.ts
+
 RUN npm install
 
 RUN npm run build --prod 
