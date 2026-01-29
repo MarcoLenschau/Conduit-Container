@@ -4,19 +4,19 @@ WORKDIR /app/
 
 COPY ./frontend .
 
-WORKDIR /app/frontend
+WORKDIR /app/src
 
 ARG BACKEND_URL
 
-RUN mkdir -p /app/frontend/src/environment && \
-    echo "export const environment = { " > /app/frontend/src/environment/environment.ts && \    
-    echo "    production: true," >> /app/frontend/src/environment/environment.ts && \
-    echo "    BACKEND_URL: '${BACKEND_URL}'" >> /app/frontend/src/environment/environment.ts && \
-    echo "};" >> /app/frontend/src/environment/environment.ts
+RUN mkdir -p environments && \
+    echo "export const environment = { " > environments/environment.ts && \    
+    echo "    production: true," >> environments/environment.ts && \
+    echo "    BACKEND_URL: '${BACKEND_URL}'" >> environments/environment.ts && \
+    echo "};" >> environments/environment.ts
 
 RUN npm install
 
-RUN npm run build --prod 
+RUN npm run build
 
 FROM nginx:1.29.4-alpine
 
