@@ -3,9 +3,9 @@ FROM python:3.5.2-alpine
 WORKDIR /app
 
 ARG ALLOWED_HOST
+ARG CORS_ORIGIN
 
 COPY ./backend ./backend
-
 COPY entrypoint.sh .
 
 WORKDIR /app/backend
@@ -17,5 +17,6 @@ EXPOSE 5000
 RUN chmod +x /app/entrypoint.sh
 
 RUN echo "ALLOWED_HOSTS = ['${ALLOWED_HOST}']" >> /app/backend/conduit/.env
+RUN echo "CORS_ORIGIN = '${CORS_ORIGIN}'" >> /app/backend/conduit/.env
 
 ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
