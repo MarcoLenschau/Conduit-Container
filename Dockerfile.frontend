@@ -12,11 +12,9 @@ RUN mkdir -p environments && \
     echo "export const environment = { " > environments/environment.ts && \    
     echo "    production: true," >> environments/environment.ts && \
     echo "    BACKEND_URL: '${BACKEND_URL}'" >> environments/environment.ts && \
-    echo "};" >> environments/environment.ts
-
-RUN npm install
-
-RUN npm run build
+    echo "};" >> environments/environment.ts && \
+    npm install && \
+    npm run build
 
 FROM nginx:1.29.4-alpine
 
