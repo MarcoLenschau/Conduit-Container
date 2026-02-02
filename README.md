@@ -40,14 +40,14 @@ git submodule init
 mv example.env .env
 ```
 
-> [!IMPORTANT]
-> Open `.env` and enter your own values.
-
 | Variable      | Description                                                                                | Example Value         |
 |--------------|---------------------------------------------------------------------------------------------|-----------------------|
 | BACKEND_URL  | Base URL where the backend is accessible.                                                   | http://localhost:5000 |
 | ALLOWED_HOST | Hostname allowed to access the backend (for security purposes).                             | localhost             |
 | CORS_ORIGIN  | Origin allowed for Cross-Origin Resource Sharing (CORS).                                    | localhost:4000        |
+
+> [!IMPORTANT]
+> Open `.env` and enter your own values.
 
 5. Start the Containers
 
