@@ -15,7 +15,7 @@ services:
       dockerfile: Dockerfile.backend
       args:
         - ALLOWED_HOST=${ALLOWED_HOST}
-        - CORS_ORIGINS=${CORS_ORIGINS}
+        - CORS_ORIGIN=${CORS_ORIGIN}
     ports:
       - "5000:5000"
     volumes:
