@@ -34,7 +34,13 @@ cd Conduit-Container
 git submodule init
 ```
 
-4. Create .env file
+4. Update the submodules
+
+```bash
+git submodule update
+```
+
+5. Create .env file
 
 ```bash
 mv example.env .env
