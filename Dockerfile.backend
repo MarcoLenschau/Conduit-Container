@@ -1,4 +1,4 @@
-FROM python:3.5.2-alpine
+FROM python:3.12-alpine
 
 WORKDIR /app
 
@@ -7,8 +7,6 @@ EXPOSE 5000
 COPY ./backend ./backend
 
 COPY entrypoint.sh . 
-
-COPY .env ./backend/
 
 WORKDIR /app/backend
 

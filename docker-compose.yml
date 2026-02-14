@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile.frontend
       args:
         - BACKEND_URL=${BACKEND_URL}
+    restart: on-failure
     ports: 
       - "4000:80"
     depends_on:
@@ -13,11 +14,22 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.backend
+    restart: on-failure
     env_file:
       - .env
     ports:
       - "5000:5000"
+    depends_on:
+      - database
+  database:
+    image: postgres:18.1
+    hostname: postgres
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
     volumes:
-      - backend-data:/app
+      - postgres_data:/var/lib/postgresql
 volumes:
-  backend-data:
+  postgres_data:  
