@@ -46,12 +46,6 @@ git submodule update
 mv example.env .env
 ```
 
-| Variable      | Description                                                                                | Example Value         |
-|--------------|---------------------------------------------------------------------------------------------|-----------------------|
-| BACKEND_URL  | Base URL where the backend is accessible.                                                   | http://localhost:5000 |
-| ALLOWED_HOST | Hostname allowed to access the backend (for security purposes).                             | localhost             |
-| CORS_ORIGIN  | Origin allowed for Cross-Origin Resource Sharing (CORS).                                    | localhost:4000        |
-
 > [!IMPORTANT]
 > Open `.env` and enter your own values.
 
@@ -67,6 +61,21 @@ docker-compose up -d --build
 - Frontend: http://<ip-address>:4000
 
 ## Usage
+
+### Env Variable
+
+| Variable          | Description                                                                                 | Example Value                 |
+|-------------------|---------------------------------------------------------------------------------------------|-------------------------------|
+| BACKEND_URL       | Base URL where the backend is accessible.                                                   | http://localhost:5000         |
+| ALLOWED_HOST      | Hostname allowed to access the backend (for security purposes).                             | localhost                     |
+| CORS_ORIGIN       | Origin allowed for Cross-Origin Resource Sharing (CORS). Use a full origin including scheme.| http://localhost:8282         |
+| DEBUG             | Enable Django debug mode. Set to True for development, False in production.                 | False                         |
+| SECRET_KEY        | Django secret key used for cryptographic signing. Keep this secret in production.           | change-me-please              |
+| POSTGRES_DB       | Name of the PostgreSQL database to use.                                                     | conduit                       |
+| POSTGRES_USER     | PostgreSQL username used by the app.                                                        | conduit                       |
+| POSTGRES_PASSWORD | Password for the PostgreSQL user. Keep secret in production (use a secret manager).         | conduit_password              |
+| POSTGRES_HOST     | Host or Docker service name for the Postgres server (in compose this is the service name).  | postgres                      |
+| POSTGRES_PORT     | Port where Postgres listens.                                                                | 5432                          |
 
 ### Useful Commands
 

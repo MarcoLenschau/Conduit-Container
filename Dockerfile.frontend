@@ -6,7 +6,7 @@ COPY ./frontend .
 
 WORKDIR /app/src
 
-ARG BACKEND_URL
+ARG BACKEND_URL=http://localhost:5000
 
 RUN mkdir -p environments && \
     echo "export const environment = { " > environments/environment.ts && \    
