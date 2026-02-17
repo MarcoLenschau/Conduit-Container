@@ -42,10 +42,11 @@ jobs:
       - name: Build docker images
         run: |
           REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          docker build -t ghcr.io/${REPO_LOWER}/backend:latest -f ./Dockerfile.backend .
-          docker build -t ghcr.io/${REPO_LOWER}/frontend:latest  --build-arg BACKEND_URL=${{ secrets.BACKEND_URL }} -f ./Dockerfile.frontend .
-          docker push ghcr.io/${REPO_LOWER}/backend:latest
-          docker push ghcr.io/${REPO_LOWER}/frontend:latest
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          docker build -t ghcr.io/${REPO_LOWER}/backend:${COMMIT_HASH} -f ./Dockerfile.backend .
+          docker build -t ghcr.io/${REPO_LOWER}/frontend:${COMMIT_HASH} --build-arg BACKEND_URL=${{ secrets.BACKEND_URL }} -f ./Dockerfile.frontend .
+          docker push ghcr.io/${REPO_LOWER}/backend:${COMMIT_HASH}
+          docker push ghcr.io/${REPO_LOWER}/frontend:${COMMIT_HASH}
       - name: Copy files via SSH
         uses: appleboy/scp-action@v1
         with:
@@ -63,12 +64,10 @@ jobs:
           port: ${{ secrets.PORT }}
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            if [ ! -d "${{ secrets.DIRECTORY }}" ]; then
-              mkdir ${{ secrets.DIRECTORY }}
-            fi
+            mkdir -p ${{ secrets.DIRECTORY }}
             cd ${{ secrets.DIRECTORY }}
-            mv /tmp/.env ${{ secrets.DIRECTORY }}
-            mv /tmp/docker-compose.yml ${{ secrets.DIRECTORY }}
+            mv /tmp/.env /tmp/docker-compose.yml ${{ secrets.DIRECTORY }}
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker-compose down
+            docker-compose pull
             docker-compose up -d
