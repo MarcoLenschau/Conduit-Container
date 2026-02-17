@@ -14,7 +14,22 @@ jobs:
     runs-on: ubuntu-24.04
     name: Deploy
     steps: 
-      - uses: actions/checkout@v6.0.2
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+      - name: Create env file
+        run: |
+          cat > .env <<EOF
+          BACKEND_URL=${{ secrets.BACKEND_URL }}
+          ALLOWED_HOSTS=${{ secrets.HOST }}
+          CORS_ORIGIN=${{ secrets.CORS_ORIGIN }}
+          DEBUG=${{ secrets.DEBUG }}
+          SECRET_KEY=${{ secrets.SECRET_KEY }}
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+          EOF
       - name: Copy files via SSH
         uses: appleboy/scp-action@v1
         with:
@@ -25,16 +40,4 @@ jobs:
           source: "."
           target: "/home/${{ secrets.USERNAME }}/Conduit-Container/"
           script: |
-            cat > .env <<EOF
-            BACKEND_URL=${{ secrets.BACKEND_URL }}
-            ALLOWED_HOSTS=${{ secrets.HOST }}
-            CORS_ORIGIN=${{ secrets.CORS_ORIGIN }}
-            DEBUG=${{ secrets.DEBUG }}
-            SECRET_KEY=${{ secrets.SECRET_KEY }}
-            POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-            POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
-            POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
-            EOF
-            docker-compose up -d --build 
+            docker-compose up -d --build
