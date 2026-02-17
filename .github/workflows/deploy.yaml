@@ -84,7 +84,7 @@ jobs:
             cd ${{ secrets.DIRECTORY }}
             mv /tmp/.env /tmp/docker-compose.yml ${{ secrets.DIRECTORY }}
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker-compose down
             docker-compose pull
-            docker-compose rm -f
             docker image prune -af
             docker-compose up -d
