@@ -43,6 +43,14 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           source: "."
           target: ${{ secrets.DIRECTORY }}
-          run: |
+
+      - name: Execute commands via SSH
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
             cd ${{ secrets.DIRECTORY }}
             docker-compose up -d --build
