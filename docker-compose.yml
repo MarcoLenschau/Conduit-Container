@@ -1,0 +1,33 @@
+services:
+  frontend:
+    build:
+      context: ./
+      dockerfile: Dockerfile.frontend
+      args:
+        - BACKEND_URL=${BACKEND_URL}
+    restart: on-failure
+    ports: 
+      - "8282:80"
+    depends_on:
+      - backend
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile.backend
+    restart: on-failure
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+  database:
+    image: postgres:18.1
+    hostname: postgres
+    restart: on-failure
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql
+volumes:
+  postgres_data:  

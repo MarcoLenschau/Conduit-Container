@@ -1,0 +1,16 @@
+FROM python:3.12-alpine
+
+WORKDIR /app
+
+EXPOSE 5000
+
+COPY ./backend ./backend
+
+COPY entrypoint.sh . 
+
+WORKDIR /app/backend
+
+RUN pip install -r requirements.txt && \
+    chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
