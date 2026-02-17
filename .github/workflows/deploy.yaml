@@ -41,4 +41,6 @@ jobs:
           target: ${{ secrets.DIRECTORY }}
           script: |
             cd ${{ secrets.DIRECTORY }}
+            git submodule init
+            git submodule update
             docker-compose up -d --build
