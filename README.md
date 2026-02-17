@@ -96,12 +96,14 @@ The workflow (`.github/workflows/deploy.yaml`) performs the following steps:
 1. **Checkout repository** - Pulls the latest code from the repository
 2. **Initialize and update submodules** - Ensures all submodules are up-to-date
 3. **Create environment file** - Generates a .env file on the server using GitHub Secrets
-4. **Copy files via SCP** - Transfers all project files to the remote server
-5. **Execute commands via SSH** - Connects to the server and deploy the docker container
+4. **Log in to GitHub Container Registry** - Authenticates with GitHub Container Registry
+5. **Build and push docker images** - Builds Docker images for the backend and frontend, then pushes them to the GitHub Container Registry
+6. **Copy files via SCP** - Transfers docker-compose and env file to the remote server
+7. **Execute commands via SSH** - Connects to the server and deploy the docker container
 
 ### Prerequisites for Deployment
 
-Before using the deployment workflow, ensure you have:
+Before using the deployment workflow, ensure you ~have:
 
 - A remote server with Docker and Docker Compose installed
 - SSH access to the remote server with a private key
