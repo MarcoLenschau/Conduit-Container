@@ -41,10 +41,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker images
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/backend:latest -f ./backend/Dockerfile .
-          docker build -t ghcr.io/${{ github.repository }}/frontend:latest  --build-arg BACKEND_URL=${{ secrets.BACKEND_URL }} -f ./frontend/Dockerfile .
-          docker push ghcr.io/${{ github.repository }}/backend:latest
-          docker push ghcr.io/${{ github.repository }}/frontend:latest
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          docker build -t ghcr.io/${REPO_LOWER}/backend:latest -f ./backend/Dockerfile .
+          docker build -t ghcr.io/${REPO_LOWER}/frontend:latest  --build-arg BACKEND_URL=${{ secrets.BACKEND_URL }} -f ./frontend/Dockerfile .
+          docker push ghcr.io/${REPO_LOWER}/backend:latest
+          docker push ghcr.io/${REPO_LOWER}/frontend:latest
       - name: Copy files via SSH
         uses: appleboy/scp-action@v1
         with:
