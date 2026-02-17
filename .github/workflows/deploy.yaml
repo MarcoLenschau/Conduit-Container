@@ -42,8 +42,8 @@ jobs:
       - name: Build docker images
         run: |
           REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          docker build -t ghcr.io/${REPO_LOWER}/backend:latest -f ./backend/Dockerfile .
-          docker build -t ghcr.io/${REPO_LOWER}/frontend:latest  --build-arg BACKEND_URL=${{ secrets.BACKEND_URL }} -f ./frontend/Dockerfile .
+          docker build -t ghcr.io/${REPO_LOWER}/backend:latest -f ./Dockerfile.backend .
+          docker build -t ghcr.io/${REPO_LOWER}/frontend:latest  --build-arg BACKEND_URL=${{ secrets.BACKEND_URL }} -f ./Dockerfile.frontend .
           docker push ghcr.io/${REPO_LOWER}/backend:latest
           docker push ghcr.io/${REPO_LOWER}/frontend:latest
       - name: Copy files via SSH
