@@ -63,15 +63,6 @@ jobs:
           tags: |
             ghcr.io/${{ env.REPO_LOWER }}/frontend:latest
             ghcr.io/${{ env.REPO_LOWER }}/frontend:${{ env.COMMIT_HASH}}
-
-      - name: Build and push docker images
-        run: |
-          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          COMMIT_HASH=$(git rev-parse --short HEAD)
-          docker build -t ghcr.io/${REPO_LOWER}/backend:${COMMIT_HASH} -f ./Dockerfile.backend .
-          docker build -t ghcr.io/${REPO_LOWER}/frontend:${COMMIT_HASH} --build-arg BACKEND_URL=${{ secrets.BACKEND_URL }} -f ./Dockerfile.frontend .
-          docker push ghcr.io/${REPO_LOWER}/backend:${COMMIT_HASH}
-          docker push ghcr.io/${REPO_LOWER}/frontend:${COMMIT_HASH}
       - name: Copy files via SSH
         uses: appleboy/scp-action@v1
         with:
