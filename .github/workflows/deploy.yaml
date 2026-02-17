@@ -67,6 +67,7 @@ jobs:
               mkdir ${{ secrets.DIRECTORY }}
             fi
             cd ${{ secrets.DIRECTORY }}
-            cp /tmp/.env ./tmp/docker-compose.yml ${{ secrets.DIRECTORY }}
+            mv /tmp/.env ${{ secrets.DIRECTORY }}
+            mv /tmp/docker-compose.yml ${{ secrets.DIRECTORY }}
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker-compose up -d
