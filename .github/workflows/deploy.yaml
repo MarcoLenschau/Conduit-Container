@@ -38,6 +38,7 @@ jobs:
           port: ${{ secrets.PORT }}
           key: ${{ secrets.PRIVATE_KEY }}
           source: "."
-          target: "/home/${{ secrets.USERNAME }}/Conduit-Container/"
+          target: ${{ secrets.DIRECTORY }}
           script: |
+            cd ${{ secrets.DIRECTORY }}
             docker-compose up -d --build
