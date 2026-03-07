@@ -1,0 +1,85 @@
+name: Deployment
+on: 
+  push:
+    branches:
+      - main
+      
+jobs:
+  deployment:
+    runs-on: ubuntu-24.04
+    name: Deploy
+    steps: 
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+        with:
+          submodules: true
+          fetch-depth: 0
+      - name: Create env file
+        run: |
+          cat > .env <<EOF
+          BACKEND_URL=${{ secrets.BACKEND_URL }}
+          ALLOWED_HOSTS=${{ secrets.HOST }}
+          CORS_ORIGIN=${{ secrets.CORS_ORIGIN }}
+          DEBUG=${{ secrets.DEBUG }}
+          SECRET_KEY=${{ secrets.SECRET_KEY }}
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+          EOF
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set variables
+        run: |
+          echo "REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV  
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6.19.2
+        with:
+          context: .
+          file: ./Dockerfile.backend
+          push: true
+          tags: | 
+            ghcr.io/${{ env.REPO_LOWER }}/backend:latest
+            ghcr.io/${{ env.REPO_LOWER }}/backend:${{ env.COMMIT_HASH}}
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6.19.2
+        with:
+          context: .
+          file: ./Dockerfile.frontend
+          push: true
+          build-args: |
+            BACKEND_URL=${{ secrets.BACKEND_URL }}
+          tags: |
+            ghcr.io/${{ env.REPO_LOWER }}/frontend:latest
+            ghcr.io/${{ env.REPO_LOWER }}/frontend:${{ env.COMMIT_HASH}}
+      - name: Copy files via SSH
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          source: ".env, docker-compose.yml"
+          target: "/tmp/"
+      - name: Execute commands via SSH
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            mkdir -p ${{ secrets.DIRECTORY }}
+            cd ${{ secrets.DIRECTORY }}
+            mv /tmp/.env /tmp/docker-compose.yml ${{ secrets.DIRECTORY }}
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker-compose down
+            docker-compose pull
+            docker image prune -af
+            docker-compose up -d
