@@ -3,11 +3,6 @@ on:
   push:
     branches:
       - main
-      - auto-deploment
-  pull_request:
-    branches:
-      - main
-      - auto-deploment
       
 jobs:
   deployment:
